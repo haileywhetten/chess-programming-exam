@@ -265,7 +265,7 @@ public class ChessPiece {
             var newMove = new ChessMove(myPosition, newPosition6, null);
             moves.add(newMove);
         }
-        var newPosition7 = new ChessPosition(currRow + 2, currCol - 1);
+        var newPosition7 = new ChessPosition(currRow - 2, currCol + 1);
         validMove = isPositionValid(board, newPosition7);
         if(validMove) {
             var newMove = new ChessMove(myPosition, newPosition7, null);
