@@ -303,23 +303,36 @@ public class ChessPiece {
         }
         if(currRow == 2 || currRow == 7) {
             var newPosition2 = new ChessPosition(currRow + 2*direction, currCol);
-            if(isPositionValid(board, newPosition1) && isPositionValid(board, newPosition2) && board.getPiece(newPosition1) != null && board.getPiece(newPosition2) != null ){
+            if(isPositionValid(board, newPosition1) && isPositionValid(board, newPosition2) && board.getPiece(newPosition1) == null && board.getPiece(newPosition2) == null ){
                 var newMove = new ChessMove(myPosition, newPosition2, null);
                 moves.add(newMove);
             }
         }
+        boolean enemyPresent = false;
         var diagonal1 = new ChessPosition(currRow + direction, currCol + 1);
         validMove = isPositionValid(board, diagonal1);
-        if(validMove && (diagonal1.getRow() != 1 && diagonal1.getRow() != 8)) {
+        if(validMove) {
+            if(board.getPiece(diagonal1) != null && board.getPiece(diagonal1).getPieceType() != type) {
+                enemyPresent = true;
+            }
+        }
+        if(validMove && enemyPresent && (diagonal1.getRow() != 1 && diagonal1.getRow() != 8)) {
             var newMove = new ChessMove(myPosition, diagonal1, null);
             moves.add(newMove);
         }
+        enemyPresent = false;
         var diagonal2 = new ChessPosition(currRow + direction, currCol - 1);
         validMove = isPositionValid(board, diagonal2);
-        if(validMove && (diagonal2.getRow() != 1 && diagonal2.getRow() != 8)) {
+        if(validMove) {
+            if(board.getPiece(diagonal2) != null && board.getPiece(diagonal2).getPieceType() != type) {
+                enemyPresent = true;
+            }
+        }
+        if(validMove && enemyPresent && (diagonal2.getRow() != 1 && diagonal2.getRow() != 8)) {
             var newMove = new ChessMove(myPosition, diagonal2, null);
             moves.add(newMove);
         }
+        enemyPresent = false;
         if(myPosition.getRow() + direction == 1 || myPosition.getRow() + direction == 8) {
             var newPosition3 = new ChessPosition(currRow + direction, currCol);
             validMove = isPositionValid(board, newPosition3);
@@ -339,6 +352,11 @@ public class ChessPiece {
             var diagonal3 = new ChessPosition(currRow + direction, currCol + 1);
             validMove = isPositionValid(board, diagonal3);
             if(validMove) {
+                if(board.getPiece(diagonal3) != null && board.getPiece(diagonal3).getPieceType() != type) {
+                    enemyPresent = true;
+                }
+            }
+            if(validMove && enemyPresent) {
                 var newMove1 = new ChessMove(myPosition, diagonal3, PieceType.BISHOP);
                 moves.add(newMove1);
                 var newMove2 = new ChessMove(myPosition, diagonal3, PieceType.KNIGHT);
@@ -348,9 +366,15 @@ public class ChessPiece {
                 var newMove4 = new ChessMove(myPosition, diagonal3, PieceType.QUEEN);
                 moves.add(newMove4);
             }
+            enemyPresent = false;
             var diagonal4 = new ChessPosition(currRow + direction, currCol - 1);
             validMove = isPositionValid(board, diagonal4);
             if(validMove) {
+                if(board.getPiece(diagonal4) != null && board.getPiece(diagonal4).getPieceType() != type) {
+                    enemyPresent = true;
+                }
+            }
+            if(validMove && enemyPresent) {
                 var newMove1 = new ChessMove(myPosition, diagonal4, PieceType.BISHOP);
                 moves.add(newMove1);
                 var newMove2 = new ChessMove(myPosition, diagonal4, PieceType.KNIGHT);
@@ -360,6 +384,7 @@ public class ChessPiece {
                 var newMove4 = new ChessMove(myPosition, diagonal4, PieceType.QUEEN);
                 moves.add(newMove4);
             }
+
         }
         return moves;
     }
